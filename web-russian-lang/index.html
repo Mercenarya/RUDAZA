@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ứng dụng Học Tiếng Nga Toàn Diện 🇷🇺 | Khung Chuẩn TRKI</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- APP HEADER -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-group">
+        <span class="flag-badge">🇷🇺</span>
+        <div>
+          <h1 class="app-title">Học Tiếng Nga Toàn Diện</h1>
+          <div class="app-subtitle">Hệ thống giáo trình chuẩn TRKI (A1 - C1) & Đề thi mẫu</div>
+        </div>
+      </div>
+      <nav>
+        <ul class="nav-tabs">
+          <li>
+            <button class="nav-tab-btn active" data-tab="roadmap">
+              🗺️ Lộ trình & Bài học
+            </button>
+          </li>
+          <li>
+            <button class="nav-tab-btn" data-tab="practice">
+              ✍️ Luyện tập & Đề thi
+            </button>
+          </li>
+          <li>
+            <button class="nav-tab-btn" data-tab="flashcards">
+              🗂️ Flashcards Từ vựng
+            </button>
+          </li>
+          <li>
+            <button class="nav-tab-btn" data-tab="grammar">
+              📖 Bảng tra Ngữ pháp
+            </button>
+          </li>
+          <li>
+            <button class="nav-tab-btn" data-tab="history">
+              📊 Lịch sử & Thống kê
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="main-wrapper">
+
+    <!-- QUICK STATS BAR -->
+    <section class="quick-stats-bar">
+      <div class="stat-card">
+        <div class="stat-info">
+          <h5>Số lần làm bài</h5>
+          <div class="stat-value" id="statTotalAttempts">0</div>
+        </div>
+        <div class="stat-icon">📝</div>
+      </div>
+      <div class="stat-card emerald">
+        <div class="stat-info">
+          <h5>Câu hỏi đã giải</h5>
+          <div class="stat-value" id="statTotalAnswered">0</div>
+        </div>
+        <div class="stat-icon">🎯</div>
+      </div>
+      <div class="stat-card carrot">
+        <div class="stat-info">
+          <h5>Độ chính xác TB</h5>
+          <div class="stat-value" id="statAvgAccuracy">0%</div>
+        </div>
+        <div class="stat-icon">📈</div>
+      </div>
+      <div class="stat-card wisteria">
+        <div class="stat-info">
+          <h5>Cấp độ hỗ trợ</h5>
+          <div class="stat-value">A1 - C1</div>
+        </div>
+        <div class="stat-icon">🎓</div>
+      </div>
+    </section>
+
+    <!-- TAB 1: ROADMAP & LESSONS -->
+    <section id="tab-roadmap" class="tab-content active">
+      <div class="level-nav-grid" id="levelCardsContainer">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="lessons-layout">
+        <aside class="lessons-sidebar" id="lessonListSidebar">
+          <!-- Rendered by JS -->
+        </aside>
+        <article class="lesson-detail-card" id="lessonDetailContainer">
+          <!-- Rendered by JS -->
+        </article>
+      </div>
+    </section>
+
+    <!-- TAB 2: PRACTICE & QUIZ -->
+    <section id="tab-practice" class="tab-content">
+      <!-- Export Banner -->
+      <div class="csv-export-banner">
+        <div class="csv-export-info">
+          <h4>📥 Tính năng Xuất kết quả bài làm ra CSV</h4>
+          <p>Tải kết quả làm bài dạng bảng chuẩn UTF-8 (mở tốt trên Excel và Google Sheets) để lưu nhật ký học tập cá nhân.</p>
+        </div>
+        <button class="flat-btn flat-btn-success" onclick="exportCurrentQuizCSV()">
+          📊 Xuất kết quả CSV hiện tại
+        </button>
+      </div>
+
+      <!-- Controls -->
+      <div class="quiz-controls-bar">
+        <div class="filter-group">
+          <label for="quizFilterSelect" style="font-weight: 700; color: #2c3e50;">Lọc theo cấp độ:</label>
+          <select id="quizFilterSelect" class="flat-select">
+            <option value="all">🌟 Tất cả các cấp độ</option>
+            <option value="A1">🟢 Cấp độ A1 (Căn bản)</option>
+            <option value="A2">🟡 Cấp độ A2 (Sơ cấp)</option>
+            <option value="B1">🔵 Cấp độ B1 (Trung cấp)</option>
+            <option value="B2-C1">🟣 Cấp độ B2 - C1 (Nâng cao)</option>
+          </select>
+        </div>
+        <div>
+          <button class="flat-btn flat-btn-outline" onclick="restartQuiz()">
+            🔄 Làm mới bài tập
+          </button>
+        </div>
+      </div>
+
+      <!-- Quiz Active Card -->
+      <div class="quiz-card" id="quizActiveCard">
+        <div class="quiz-progress-wrapper">
+          <div class="quiz-progress-text">
+            <span id="quizProgressText">Câu 1 / 10</span>
+            <span id="questionTopic">Chủ đề: Đang tải...</span>
+          </div>
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="quizProgressBarFill"></div>
+          </div>
+        </div>
+
+        <div class="question-header">
+          <span class="level-badge" id="questionBadge" style="background-color: var(--color-primary);">A1</span>
+        </div>
+
+        <div class="question-text" id="questionText">
+          Đang tải nội dung câu hỏi...
+        </div>
+
+        <div class="options-container" id="optionsContainer">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Instant Feedback Box -->
+        <div class="feedback-box" id="feedbackBox"></div>
+
+        <div class="quiz-action-bar">
+          <button class="flat-btn flat-btn-outline" onclick="restartQuiz()">
+            Bỏ qua bài này
+          </button>
+          <button class="flat-btn flat-btn-primary" id="quizActionButton" onclick="checkCurrentAnswer()">
+            Kiểm tra đáp án
+          </button>
+        </div>
+      </div>
+
+      <!-- Quiz Summary Card (Shown when quiz completes) -->
+      <div class="quiz-summary-card" id="quizSummaryCard">
+        <h2 style="font-size: 1.8rem; color: #2c3e50;">🎉 Hoàn Thành Bài Luyện Tập!</h2>
+        <p style="color: #7f8c8d; margin-top: 0.5rem;">Dưới đây là kết quả đánh giá năng lực của bạn:</p>
+
+        <div class="summary-score-circle">
+          <div class="score-num" id="summaryScoreNum">8/10</div>
+          <div class="score-total" id="summaryScorePercentage">80%</div>
+        </div>
+
+        <div id="summaryRatingBadge" style="font-size: 1.25rem; font-weight: 700; margin: 1rem 0;">
+          🏆 Xuất sắc! Nắm vững kiến thức!
+        </div>
+
+        <div class="summary-actions">
+          <button class="flat-btn flat-btn-primary" onclick="restartQuiz()">
+            🔄 Làm lại bài kiểm tra
+          </button>
+          <button class="flat-btn flat-btn-success" onclick="exportCurrentQuizCSV()">
+            📥 Xuất kết quả chi tiết ra file CSV
+          </button>
+          <button class="flat-btn flat-btn-outline" onclick="switchTab('roadmap')">
+            📚 Quay về trang Lộ trình
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: FLASHCARDS -->
+    <section id="tab-flashcards" class="tab-content">
+      <div class="quiz-controls-bar">
+        <div class="filter-group">
+          <label for="fcFilterLevel" style="font-weight: 700; color: #2c3e50;">Cấp độ từ vựng:</label>
+          <select id="fcFilterLevel" class="flat-select">
+            <option value="all">🌟 Tất cả các cấp độ</option>
+            <option value="A1">🟢 Cấp độ A1</option>
+            <option value="A2">🟡 Cấp độ A2</option>
+            <option value="B1">🔵 Cấp độ B1</option>
+            <option value="B2">🟣 Cấp độ B2 - C1</option>
+          </select>
+        </div>
+        <div style="font-size: 0.95rem; font-weight: 600; color: #7f8c8d;" id="fcCounter">
+          1 / 15
+        </div>
+      </div>
+
+      <div class="flashcards-container">
+        <div class="flashcard-wrapper" id="flashcardWrapper">
+          <div class="flashcard-inner">
+            <!-- Front -->
+            <div class="flashcard-front">
+              <span class="level-badge" id="fcBadge" style="background-color: var(--color-primary); position: absolute; top: 1.25rem; left: 1.25rem;">A1</span>
+              <button class="flat-btn flat-btn-outline flat-btn-sm" style="position: absolute; top: 1.25rem; right: 1.25rem;" onclick="speakCurrentWord(event)" title="Nghe phát âm">
+                🔊 Phát âm
+              </button>
+              <div class="fc-word" id="fcWord">Здравствуйте</div>
+              <div class="fc-ipa" id="fcIpa">[здравствуйт'э]</div>
+              <span class="fc-pos" id="fcPos">Từ chào hỏi</span>
+              <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #94a3b8;">(Nhấp vào thẻ để xem nghĩa tiếng Việt & ví dụ)</p>
+            </div>
+            <!-- Back -->
+            <div class="flashcard-back">
+              <div class="fc-meaning" id="fcMeaning">Xin chào (trang trọng)</div>
+              <div class="fc-example" id="fcExample">Ví dụ: "Здравствуйте, профессор!"</div>
+              <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #94a3b8;">(Nhấp để quay lại mặt trước)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flashcard-controls">
+          <button class="flat-btn flat-btn-outline" onclick="prevFlashcard(event)">
+            ⬅️ Từ trước
+          </button>
+          <button class="flat-btn flat-btn-primary" onclick="speakCurrentWord(event)">
+            🔊 Nghe phát âm (Voice)
+          </button>
+          <button class="flat-btn flat-btn-outline" onclick="nextFlashcard(event)">
+            Từ tiếp theo ➡️
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: GRAMMAR TABLES -->
+    <section id="tab-grammar" class="tab-content">
+      <div class="lesson-detail-card" style="margin-bottom: 2rem;" id="nounTableContainer">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="lesson-detail-card" id="prefixesTableContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- TAB 5: HISTORY & ANALYTICS -->
+    <section id="tab-history" class="tab-content">
+      <div class="history-card">
+        <div class="history-header">
+          <div>
+            <h3 style="font-size: 1.4rem; color: #2c3e50;">📊 Nhật ký Luyện tập & Đánh giá Năng lực</h3>
+            <p style="color: #7f8c8d; font-size: 0.9rem;">Toàn bộ tiến trình làm bài được lưu an toàn trong trình duyệt.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="flat-btn flat-btn-success" onclick="exportAllHistoryCSV()">
+              📥 Xuất toàn bộ Lịch sử ra CSV
+            </button>
+            <button class="flat-btn flat-btn-danger" onclick="clearAllHistory()">
+              🗑️ Xóa lịch sử
+            </button>
+          </div>
+        </div>
+
+        <div id="historyTableContainer">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- AUTHOR & DEVELOPER INFORMATION SECTION -->
+  <section class="author-section">
+    <div class="author-card">
+      <div class="author-badge">
+        <span class="badge-ru">Разработчик и создатель сайта</span>
+        <span class="badge-vn">Tác giả & Thiết kế Website</span>
+      </div>
+      <div class="author-profile">
+        <div class="author-avatar">👨‍💻</div>
+        <div class="author-details">
+          <h3 class="author-name">
+            Tran Quoc Minh <span class="author-name-ru">(Чан Куок Минь)</span>
+          </h3>
+          <p class="author-title-bilingual">
+            Веб-разработчик и дизайнер системы | Nhà phát triển & Thiết kế hệ thống
+          </p>
+          <div class="author-contacts-grid">
+            <div class="contact-item">
+              <span class="contact-icon">📧</span>
+              <span class="contact-label-ru">Эл. почта:</span>
+              <a href="mailto:mtranquoc77@gmail.com" class="contact-link">mtranquoc77@gmail.com</a>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">🐙</span>
+              <span class="contact-label-ru">Гитхаб:</span>
+              <a href="https://github.com/Mercenarya" target="_blank" rel="noopener noreferrer" class="contact-link">github.com/Mercenarya</a>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📞</span>
+              <span class="contact-label-ru">Телефон:</span>
+              <a href="tel:0766709535" class="contact-link">0766709535 (+84 766 709 535)</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP FOOTER -->
+  <footer class="app-footer">
+    <div class="header-container" style="justify-content: center; text-align: center;">
+      <p>🇷🇺 Ứng dụng Học Tiếng Nga Toàn Diện | Thiết kế Flat UI | Không yêu cầu máy chủ phức tạp</p>
+      <p style="margin-top: 0.4rem; font-size: 0.82rem;">Được xây dựng dựa trên kho học liệu chuẩn: Дорога в Россию, Поехали!, Точка Ру, Чистая грамматика & Bộ đề TRKI</p>
+      <p style="margin-top: 0.4rem; font-size: 0.85rem; color: #7f8c8d;">
+        Người thiết kế & phát triển: <strong>Tran Quoc Minh (Чан Куок Минь)</strong> • GitHub: <a href="https://github.com/Mercenarya" target="_blank" style="color: #2980b9;">Mercenarya</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="appToast" class="flat-toast"></div>
+
+  <!-- SCRIPTS -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+
