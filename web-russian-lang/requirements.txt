@@ -1,0 +1,17 @@
+# Thư viện Python cho Ứng dụng Web Học Tiếng Nga (web-russian-lang)
+
+# 1. Server & Hỗ trợ phát triển web (Tùy chọn nâng cao)
+# Mặc định serve.py dùng thư viện chuẩn Python (http.server) không cần cài đặt.
+# Nếu muốn chạy server nâng cao hoặc auto-reload khi chỉnh sửa file:
+flask>=3.0.0
+livereload>=2.7.0
+
+# 2. Xử lý dữ liệu & Báo cáo kết quả học tập (CSV / Excel)
+# Hỗ trợ phân tích, tổng hợp kết quả bài tập xuất ra từ web:
+pandas>=2.2.0
+openpyxl>=3.1.0
+
+# 3. Hỗ trợ xử lý văn bản tiếng Nga & Phân tích ngữ liệu (Nếu mở rộng)
+python-dateutil>=2.9.0
+charset-normalizer>=3.3.0
+
