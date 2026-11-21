@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
 HTTP Server for Russian Learning Web Application
-Bound explicitly to 127.0.0.1:8080
+Supports both Local (127.0.0.1) and Cloud Deployment (Render.com, Railway, etc.)
 """
 import os
 import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
-HOST = "127.0.0.1"
-PORT = 8080
+# On Cloud (e.g. Render.com), PORT is injected as an environment variable and HOST must be 0.0.0.0
+PORT = int(os.environ.get("PORT", 8080))
+HOST = os.environ.get("HOST", "0.0.0.0")
 
 class RussianAppRequestHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -25,11 +26,11 @@ def run_server():
     server_address = (HOST, PORT)
     httpd = HTTPServer(server_address, RussianAppRequestHandler)
     print("=" * 60)
-    print(f"🚀 SERVER TIẾNG NGA ĐÃ KHỞI CHẠY THÀNH CÔNG TẠI:")
-    print(f"👉 http://{HOST}:{PORT}")
-    print(f"👉 http://localhost:{PORT}")
+    print("🚀 SERVER TIẾNG NGA ĐÃ KHỞI CHẠY THÀNH CÔNG!")
+    print(f"👉 Listening on: http://{HOST}:{PORT}")
+    print(f"👉 Truy cập cục bộ: http://127.0.0.1:{PORT}")
     print("=" * 60)
-    print("Nhấn Ctrl + C để dừng server khi cần.")
+    sys.stdout.flush()
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
@@ -39,4 +40,3 @@ def run_server():
 
 if __name__ == "__main__":
     run_server()
-
